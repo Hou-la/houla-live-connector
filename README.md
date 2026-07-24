@@ -95,6 +95,32 @@ conn.on('gift', (gift) => {
 });
 ```
 
+## Gift reference
+
+To map a gift to an action you need its `slug`. The full, always-current gift catalogue is public, no key required:
+
+```
+GET https://api.hou.la/api/gifts
+```
+
+Every active gift, with the fields that matter for an integration:
+
+```json
+{
+  "slug": "flame",
+  "name": "Flame",
+  "coinCost": 3,
+  "category": "chat_png",
+  "thumbnailUrl": "https://.../gifts/.../flame.png"
+}
+```
+
+- `slug` is the stable id. Match on it, not on `name` (display text, can change or be localized).
+- `coinCost` is the value in coins, handy for "bigger gift, bigger reaction" logic.
+- `thumbnailUrl` is a PNG on the CDN, ready to drop into an overlay.
+
+New gifts show up here on their own, so fetch it at startup rather than hard-coding a list.
+
 ## Examples
 
 See the [`examples`](./examples) folder.
