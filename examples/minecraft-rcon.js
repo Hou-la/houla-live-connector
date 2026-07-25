@@ -9,10 +9,10 @@
 //   rcon.port=25575
 //
 // Then install the two packages and run it with your key:
-//   npm install houla-live-connector rcon-client
+//   npm install @houla/live-connector rcon-client
 //   HOULA_EVENT_KEY=hle_xxx RCON_PASSWORD=changeme node minecraft-rcon.js
 
-const { HoulaLiveConnection } = require('houla-live-connector');
+const { HoulaLiveConnection } = require('@houla/live-connector');
 const { Rcon } = require('rcon-client');
 
 const RCON = {
@@ -22,13 +22,18 @@ const RCON = {
 };
 
 // Map a gift to a Minecraft command. Tweak this to taste. `qty` is how many
-// of the gift were sent at once, so a combo can do more.
+// of the gift were sent at once, so a combo can do more. Slugs come from the
+// public gift catalogue: GET https://api.hou.la/api/gifts
 function commandForGift(gift, qty) {
   switch (gift.slug) {
-    case 'rose':
+    case 'flame':
+      // A small gift (Flamme, 3 coins), a small spark.
       return `summon minecraft:tnt ~ ~5 ~`;
-    case 'dragon':
-      // A bigger gift, a bigger reaction.
+    case 'diamond':
+      // A mid-tier gift (199 coins), a mid-tier reward.
+      return `give @p minecraft:diamond 8`;
+    case 'fire_dragon':
+      // A big gift (Fire Dragon, 4999 coins), a big reaction.
       return `execute at @p run summon minecraft:ender_dragon ~ ~10 ~`;
     default:
       // Anything else drops one TNT per unit, capped so a big combo stays fun.

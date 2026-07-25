@@ -1,6 +1,9 @@
 {
-  "name": "houla-live-connector",
+  "name": "@houla/live-connector",
   "version": "0.1.0",
+  "publishConfig": {
+    "access": "public"
+  },
   "description": "Receive Hou.la live events (gifts, hearts, chat and more) in real time and wire them into anything: OBS overlays, games, lights, bots.",
   "keywords": [
     "houla",

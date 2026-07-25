@@ -1,11 +1,11 @@
-# houla-live-connector
+# @houla/live-connector
 
 Receive your Hou.la live events (gifts, hearts, chat and more) in real time, and do whatever you want with them: show an alert on an OBS overlay, spawn a mob in Minecraft, flash your lights, run a bot.
 
 If you have used `tiktok-live-connector` before, this will feel familiar. You create a connection, you listen for events, that is it.
 
 ```js
-const { HoulaLiveConnection } = require('houla-live-connector');
+const { HoulaLiveConnection } = require('@houla/live-connector');
 
 const conn = new HoulaLiveConnection({ token: 'hle_your_key_here' });
 
@@ -19,7 +19,7 @@ conn.connect();
 ## Install
 
 ```bash
-npm install houla-live-connector
+npm install @houla/live-connector
 ```
 
 Node 18 or newer.

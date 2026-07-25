@@ -3,7 +3,7 @@
 // Run it with your own key:
 //   HOULA_EVENT_KEY=hle_xxx node log.js
 
-const { HoulaLiveConnection } = require('houla-live-connector');
+const { HoulaLiveConnection } = require('@houla/live-connector');
 
 const conn = new HoulaLiveConnection({
   token: process.env.HOULA_EVENT_KEY,
