@@ -38,14 +38,26 @@ A key belongs to a workspace and only ever receives that workspace's own live ev
 
 Listen with `.on(type, handler)`.
 
+Connection events:
+
 | Event | Fires when |
 | --- | --- |
 | `connected` | the key is accepted and the stream is open |
-| `gift` | a gift is received on one of your lives |
 | `disconnected` | the connection drops |
 | `error` | the key is rejected or the socket fails |
 
-There is also a catch all `event` that fires for everything, which is handy for logging:
+Live events — pick which ones a key receives when you create it:
+
+| Event | Fires when |
+| --- | --- |
+| `gift` | a gift is received on one of your lives |
+| `hearts` | the live's heart total updates |
+| `comment` | a comment is approved in your chat |
+| `viewer` | a viewer joins, shares, opens your shop or adds to cart |
+| `poll` | a poll starts, its tally updates, or it closes (switch on `poll.phase`) |
+| `gift_goal` | a gift-goal's progress advances |
+
+All events are fully typed. There is also a catch all `event` that fires for everything, handy for logging:
 
 ```js
 conn.on('event', (envelope) => {
@@ -53,7 +65,7 @@ conn.on('event', (envelope) => {
 });
 ```
 
-Gifts are fully typed today. Other event types (hearts, comments, viewers, polls, gift goals) can be selected on a key and will start flowing as they come online, on the same `event` channel and the same envelope shape, so nothing changes in your code when they do.
+Every payload carries only public display identity — a workspace's name, avatar, handle and verified badge — never private account data. Each live event includes `live: { roomId, workspaceId }`.
 
 ### Gift payload
 
@@ -79,6 +91,37 @@ Gifts are fully typed today. Other event types (hearts, comments, viewers, polls
     avatarUrl: string | null
   }
 }
+```
+
+### Other event payloads
+
+`live` is `{ roomId, workspaceId }` on every event. Full TypeScript types ship with the package.
+
+```ts
+// hearts
+{ live, totalHearts: number }
+
+// comment
+{ live,
+  comment: { id, content, parentId, serverSequence, createdAt },
+  author:  { workspaceId, name, avatarUrl, slug, isVerified } }
+
+// viewer
+{ live,
+  kind:   'join' | 'share' | 'shop_view' | 'cart_add',
+  viewer: { workspaceId, name, avatarUrl, isVerified } }
+
+// poll — switch on poll.phase
+{ live, poll: { phase: 'started', id, sessionId, question,
+                options: [{ id, label }], anonymous, tally, totalVotes,
+                expiresAt, startedAt } }
+{ live, poll: { phase: 'tally',  sessionId, tally, totalVotes } }
+{ live, poll: { phase: 'closed', sessionId, tally, totalVotes, status } }
+
+// gift_goal
+{ live, goal: { id, label, isCompleted,
+                items: [{ giftId, giftName, giftThumbnailUrl,
+                          coinCost, targetQuantity, currentQuantity }] } }
 ```
 
 ## De-duplicate with transactionId

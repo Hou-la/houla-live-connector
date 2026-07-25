@@ -55,6 +55,103 @@ export interface GiftEvent {
   };
 }
 
+/**
+ * Public workspace display identity. Events carry ONLY these public fields —
+ * a workspace's name, avatar, handle and verified badge — never private data.
+ */
+export interface PublicIdentity {
+  workspaceId: string | null;
+  name: string | null;
+  avatarUrl: string | null;
+  /** Present on comment authors; absent on viewers. */
+  slug?: string | null;
+  isVerified: boolean;
+}
+
+/** Reference to the live an event belongs to. */
+export interface LiveRef {
+  roomId: string;
+  /** The broadcaster's workspace — the creator whose live it is. */
+  workspaceId: string;
+}
+
+/** The live's running heart total updated (already aggregated, throttled). */
+export interface HeartsEvent {
+  live: LiveRef;
+  totalHearts: number;
+}
+
+/** A comment was approved in your live chat. */
+export interface CommentEvent {
+  live: LiveRef;
+  comment: {
+    id: string;
+    content: string | null;
+    parentId: string | null;
+    serverSequence: number | null;
+    createdAt: string | null;
+  };
+  /** Public identity of the commenter. */
+  author: PublicIdentity;
+}
+
+/** A viewer interaction on your live. */
+export interface ViewerEvent {
+  live: LiveRef;
+  kind: 'join' | 'share' | 'shop_view' | 'cart_add';
+  /** Public identity of the viewer. */
+  viewer: Omit<PublicIdentity, 'slug'>;
+}
+
+export interface PollOption {
+  id: string;
+  label: string;
+}
+interface PollBase {
+  sessionId: string | null;
+  tally: Record<string, number>;
+  totalVotes: number;
+}
+export interface PollStarted extends PollBase {
+  phase: 'started';
+  id: string | null;
+  question: string | null;
+  options: PollOption[];
+  anonymous: boolean;
+  expiresAt: string | null;
+  startedAt: string | null;
+}
+export interface PollTally extends PollBase {
+  phase: 'tally';
+}
+export interface PollClosed extends PollBase {
+  phase: 'closed';
+  status: string | null;
+}
+/** A poll started, its tally updated, or it closed. Switch on `poll.phase`. */
+export interface PollEvent {
+  live: LiveRef;
+  poll: PollStarted | PollTally | PollClosed;
+}
+
+/** A gift-goal's progress advanced (fires once with `isCompleted: true`). */
+export interface GiftGoalEvent {
+  live: LiveRef;
+  goal: {
+    id: string | null;
+    label: string | null;
+    isCompleted: boolean;
+    items: Array<{
+      giftId: string;
+      giftName: string;
+      giftThumbnailUrl: string | null;
+      coinCost: number;
+      targetQuantity: number;
+      currentQuantity: number;
+    }>;
+  };
+}
+
 /** Payload sent with the `connected` event once the key is accepted. */
 export interface ReadyInfo {
   workspaceId: string;
@@ -79,6 +176,11 @@ export interface ConnectorEvents {
   disconnected: (reason: string) => void;
   error: (error: Error) => void;
   gift: (gift: GiftEvent) => void;
+  hearts: (hearts: HeartsEvent) => void;
+  comment: (comment: CommentEvent) => void;
+  viewer: (viewer: ViewerEvent) => void;
+  poll: (poll: PollEvent) => void;
+  gift_goal: (goal: GiftGoalEvent) => void;
   /** Fires for every event, whatever its type. Handy for logging. */
   event: (envelope: EventEnvelope) => void;
 }
