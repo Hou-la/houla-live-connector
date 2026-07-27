@@ -1,0 +1,46 @@
+name: Build connector .exe
+
+# Builds the single-file Windows executable a non-technical streamer can just
+# download + double-click (no npm, no terminal). Runs on a version tag and
+# attaches a zip (exe + starter config + sample bundle) to the GitHub Release.
+# Also available on-demand via "Run workflow".
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+jobs:
+  windows-exe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: oven-sh/setup-bun@v2
+
+      - run: npm ci
+      - run: npm run build # tsc → dist/
+
+      # Bun compiles the CJS runner + its deps into ONE self-contained win exe.
+      - run: mkdir -p release
+      - run: bun build bin/houla-connector.js --compile --target=bun-windows-x64 --outfile release/houla-connector.exe
+
+      # Ship a ready-to-fill config + a sample bundle next to the exe.
+      - run: |
+          cp houla.config.example.json release/houla.config.json
+          cp examples/gaming-fx.bundle.json release/bundle.json
+          cd release && zip -r houla-connector-win.zip houla-connector.exe houla.config.json bundle.json
+
+      - name: Attach to the GitHub Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: release/houla-connector-win.zip
+
+      - name: Upload as a workflow artifact (manual runs)
+        uses: actions/upload-artifact@v4
+        with:
+          name: houla-connector-win
+          path: release/houla-connector-win.zip

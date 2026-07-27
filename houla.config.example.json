@@ -1,0 +1,11 @@
+{
+  "key": "hle_colle_ta_cle_ici",
+  "preset": "bundle.json",
+  "vars": { "player": "TonPseudoMinecraft" },
+  "cooldownMs": 1500,
+  "rcon": {
+    "host": "127.0.0.1",
+    "port": 25575,
+    "password": "ton_mot_de_passe_rcon"
+  }
+}

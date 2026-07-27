@@ -164,12 +164,74 @@ Every active gift, with the fields that matter for an integration:
 
 New gifts show up here on their own, so fetch it at startup rather than hard-coding a list.
 
+## Bundles → effects (`loadPreset` / `applyPreset`)
+
+For **interactive gifts**, instead of a hand-written slug→command switch you can load a
+**bundle** and let the connector wire it up — with a per-slot cooldown and safe
+placeholder substitution. A bundle is the same `bundle.json` shape used by the
+[community bundles repo](https://github.com/houla-community/bundles): each reserved slot
+(`ix_slot_01`…`ix_slot_30`) carries an `effect`.
+
+```js
+const { HoulaLiveConnection, loadPreset, applyPreset } = require('@houla/live-connector');
+
+const preset = loadPreset('./gaming-fx.bundle.json');   // path OR object OR { slug: {command} } map
+const conn = new HoulaLiveConnection({ token: 'hle_...' });
+
+applyPreset(conn, preset, {
+  cooldownMs: 1500,                       // default per-slot throttle
+  vars: { player: 'Steve' },              // fills {player} in commands
+  onCommand: (command, gift) => rcon.send(command),   // YOUR executor
+});
+
+conn.connect();
+```
+
+Placeholders resolved in commands: `{sender}`, `{quantity}`, `{coins}`, `{name}`, plus any
+`vars` you pass (e.g. `{player}`). Untrusted values (the sender name) are sanitized. Gifts are
+de-duplicated on `transactionId` by default, and each slot honours its own `cooldownMs`.
+
+### Dry-run without a live — `simulateGift`
+
+Test your effects offline (no live, no coins, no connection). It fires the exact same path as a
+real gift:
+
+```js
+conn.simulateGift({ slug: 'ix_slot_09', senderName: 'Alice' }); // → your onCommand runs
+```
+
+## No terminal — the app (for streamers)
+
+Don't want to touch npm or a terminal? Grab **`houla-connector.exe`** from the
+[Releases](https://github.com/Hou-la/houla-live-connector/releases) page (built by CI), then:
+
+1. Unzip → you get `houla-connector.exe`, `houla.config.json` and a sample `bundle.json`.
+2. Open `houla.config.json` and paste your key (created in the Studio → *Connecteur live*):
+   ```json
+   {
+     "key": "hle_your_key",
+     "vars": { "player": "YourMinecraftName" },
+     "rcon": { "host": "127.0.0.1", "port": 25575, "password": "your_rcon_password" }
+   }
+   ```
+   The `rcon` block is **optional** — leave it out to just see gifts logged; add it and gifts fire
+   Minecraft commands. A `bundle.json` next to the exe supplies the gift→command mapping.
+3. **Double-click the exe.** First run without a config? It asks for your key and saves it. Add it to
+   Windows startup so it launches on boot — set-and-forget.
+
+The connector is **optional**: run it only if you want gifts to trigger real effects.
+
+<sub>Build it yourself: `npm run build:exe` (needs pkg's prebuilt fetch or VS build tools), or with
+[Bun](https://bun.sh): `bun build bin/houla-connector.js --compile --target=bun-windows-x64 --outfile release/houla-connector.exe`.
+CI ([`release-exe.yml`](./.github/workflows/release-exe.yml)) does this on every version tag.</sub>
+
 ## Examples
 
 See the [`examples`](./examples) folder.
 
 - [`log.js`](./examples/log.js) prints every gift.
-- [`minecraft-rcon.js`](./examples/minecraft-rcon.js) turns a gift into a Minecraft command over RCON. This is the "send a gift, something happens in the game" setup. Map each gift slug to whatever you like.
+- [`minecraft-rcon.js`](./examples/minecraft-rcon.js) turns a gift into a Minecraft command over RCON — a hand-written slug→command switch.
+- [`bundle-effects.js`](./examples/bundle-effects.js) loads a **bundle** preset, applies it with per-slot cooldown, and runs offline via `simulateGift` when no key is set.
 
 ## Options
 

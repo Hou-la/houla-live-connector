@@ -5,6 +5,7 @@ import {
   ConnectorOptions,
   EventEnvelope,
   EventType,
+  GiftEvent,
 } from './types';
 
 const DEFAULT_URL = 'https://api.hou.la';
@@ -83,6 +84,52 @@ export class HoulaLiveConnection extends EventEmitter {
   /** True while the underlying socket is connected. */
   get connected(): boolean {
     return this.socket?.connected ?? false;
+  }
+
+  /**
+   * Locally emit a synthetic `gift` (and `event`) for SANDBOX testing — no
+   * live, no coins, no connection required. It mirrors the exact real dispatch
+   * path, so your `applyPreset` / `on('gift', …)` handlers fire identically.
+   * Handy to dry-run a bundle's effects before going live.
+   */
+  simulateGift(opts: {
+    slug: string;
+    quantity?: number;
+    coinCost?: number;
+    senderName?: string;
+  }): GiftEvent {
+    const quantity = opts.quantity ?? 1;
+    const coinCost = opts.coinCost ?? 0;
+    const gift: GiftEvent = {
+      transactionId: `sim_${Date.now()}`,
+      live: { roomId: 'sim', workspaceId: 'sim' },
+      gift: {
+        id: 'sim',
+        slug: opts.slug,
+        name: opts.slug,
+        category: null,
+        coinCost,
+        quantity,
+        totalCoins: coinCost * quantity,
+        totalStars: coinCost * quantity,
+        thumbnailUrl: null,
+        animationDurationMs: null,
+      },
+      sender: {
+        workspaceId: null,
+        name: opts.senderName ?? 'Sandbox',
+        avatarUrl: null,
+      },
+    };
+    const envelope: EventEnvelope<GiftEvent> = {
+      event: 'live.gift_received',
+      type: 'gift',
+      timestamp: new Date().toISOString(),
+      data: gift,
+    };
+    this.emit('gift', gift);
+    this.emit('event', envelope);
+    return gift;
   }
 
   // Typed overloads over Node's EventEmitter so editors autocomplete the

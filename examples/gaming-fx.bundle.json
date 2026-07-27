@@ -1,0 +1,26 @@
+{
+  "slug": "gaming-fx",
+  "name": "Gaming FX",
+  "theme": "gaming",
+  "game": "minecraft",
+  "slots": [
+    {
+      "slug": "ix_slot_01",
+      "name": "Spark",
+      "image": "assets/spark.png",
+      "effect": { "type": "rcon", "command": "execute at {player} run summon minecraft:snowball", "cooldownMs": 1000 }
+    },
+    {
+      "slug": "ix_slot_05",
+      "name": "Diamond",
+      "image": "assets/diamond.png",
+      "effect": { "type": "rcon", "command": "give {player} minecraft:diamond 1", "cooldownMs": 2000 }
+    },
+    {
+      "slug": "ix_slot_09",
+      "name": "Royal Crown",
+      "image": "assets/crown.png",
+      "effect": { "type": "rcon", "command": "effect give {player} minecraft:glowing 30 0", "cooldownMs": 5000 }
+    }
+  ]
+}
