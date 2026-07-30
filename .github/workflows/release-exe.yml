@@ -11,6 +11,11 @@ on:
     tags: ['v*']
   workflow_dispatch:
 
+# Required so softprops/action-gh-release can create the Release + upload assets
+# (default GITHUB_TOKEN is read-only in this org → 403 otherwise).
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
