@@ -1,9 +1,10 @@
-name: Build connector .exe
+name: Build connector binaries
 
-# Builds the single-file Windows executable a non-technical streamer can just
-# download + double-click (no npm, no terminal). Runs on a version tag and
-# attaches a zip (exe + starter config + sample bundle) to the GitHub Release.
-# Also available on-demand via "Run workflow".
+# Builds ONE self-contained binary per OS that a non-technical streamer can just
+# download + run (no npm, no terminal): Windows (.exe double-click), macOS (Intel
+# + Apple Silicon), Linux. Each zip ships the binary + a starter houla.config.json
+# + the Minecraft bundle.json + QUICKSTART. Runs on a version tag → attaches every
+# zip to the GitHub Release. Also available on-demand via "Run workflow".
 
 on:
   push:
@@ -11,7 +12,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  windows-exe:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -23,24 +24,39 @@ jobs:
       - run: npm ci
       - run: npm run build # tsc → dist/
 
-      # Bun compiles the CJS runner + its deps into ONE self-contained win exe.
-      - run: mkdir -p release
-      - run: bun build bin/houla-connector.js --compile --target=bun-windows-x64 --outfile release/houla-connector.exe
+      # Bun cross-compiles the CJS runner + its deps into ONE self-contained
+      # binary per target, from this single Linux runner.
+      - name: Build all platforms + package each zip
+        run: |
+          set -euo pipefail
+          # name → "bun-target:binary-name"
+          declare -A T=(
+            [windows-x64]="bun-windows-x64:houla-connector.exe"
+            [linux-x64]="bun-linux-x64:houla-connector"
+            [macos-intel]="bun-darwin-x64:houla-connector"
+            [macos-apple-silicon]="bun-darwin-arm64:houla-connector"
+          )
+          mkdir -p out
+          for name in "${!T[@]}"; do
+            spec="${T[$name]}"; target="${spec%%:*}"; binname="${spec##*:}"
+            dir="pkg/$name"; mkdir -p "$dir"
+            bun build bin/houla-connector.js --compile --target="$target" --outfile "$dir/$binname"
+            cp houla.config.example.json "$dir/houla.config.json"
+            cp examples/minecraft.bundle.json "$dir/bundle.json"
+            cp QUICKSTART.md "$dir/QUICKSTART.md"
+            (cd "$dir" && zip -r "../../out/houla-connector-$name.zip" .)
+          done
+          ls -la out
 
-      # Ship a ready-to-fill config + a sample bundle next to the exe.
-      - run: |
-          cp houla.config.example.json release/houla.config.json
-          cp examples/gaming-fx.bundle.json release/bundle.json
-          cd release && zip -r houla-connector-win.zip houla-connector.exe houla.config.json bundle.json
-
-      - name: Attach to the GitHub Release
+      - name: Attach every binary to the GitHub Release
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
-          files: release/houla-connector-win.zip
+          files: out/*.zip
+          generate_release_notes: true
 
-      - name: Upload as a workflow artifact (manual runs)
+      - name: Upload as workflow artifacts (manual runs)
         uses: actions/upload-artifact@v4
         with:
-          name: houla-connector-win
-          path: release/houla-connector-win.zip
+          name: houla-connector-binaries
+          path: out/*.zip

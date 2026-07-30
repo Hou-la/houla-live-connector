@@ -1,0 +1,190 @@
+{
+  "slug": "minecraft",
+  "name": "Minecraft — Survie",
+  "theme": "gaming",
+  "game": "minecraft",
+  "author": "Hou.la",
+  "description": "Pack interactif Minecraft : les viewers récompensent (objets, buffs, élytra, totem) ou piègent (mobs, nuit, orage, dragon) le streamer en direct via RCON. Effets classés par impact = prix croissant. Majoritairement non destructifs — TNT et dragon (rares) peuvent abîmer le monde.",
+  "slots": [
+    {
+      "slug": "ix_slot_01",
+      "name": "Charbon",
+      "image": "assets/coal.png",
+      "effect": { "type": "rcon", "command": "give {player} minecraft:coal 8", "cooldownMs": 1500 }
+    },
+    {
+      "slug": "ix_slot_02",
+      "name": "Pain",
+      "image": "assets/bread.png",
+      "effect": { "type": "rcon", "command": "give {player} minecraft:bread 4", "cooldownMs": 1500 }
+    },
+    {
+      "slug": "ix_slot_03",
+      "name": "Torches",
+      "image": "assets/torch.png",
+      "effect": { "type": "rcon", "command": "give {player} minecraft:torch 16", "cooldownMs": 1500 }
+    },
+    {
+      "slug": "ix_slot_04",
+      "name": "Cargaison de bois",
+      "image": "assets/oak_log.png",
+      "effect": { "type": "rcon", "command": "give {player} minecraft:oak_log 32", "cooldownMs": 2000 }
+    },
+    {
+      "slug": "ix_slot_05",
+      "name": "Lingot de fer",
+      "image": "assets/iron_ingot.png",
+      "effect": { "type": "rcon", "command": "give {player} minecraft:iron_ingot 4", "cooldownMs": 2000 }
+    },
+    {
+      "slug": "ix_slot_06",
+      "name": "Poulet",
+      "image": "assets/chicken.png",
+      "effect": { "type": "rcon", "command": "execute at {player} run summon minecraft:chicken", "cooldownMs": 2000 }
+    },
+    {
+      "slug": "ix_slot_07",
+      "name": "Grand soleil",
+      "image": "assets/day.png",
+      "effect": { "type": "rcon", "command": "time set day", "cooldownMs": 6000 }
+    },
+    {
+      "slug": "ix_slot_08",
+      "name": "Nuit noire",
+      "image": "assets/night.png",
+      "effect": { "type": "rcon", "command": "time set night", "cooldownMs": 8000 }
+    },
+    {
+      "slug": "ix_slot_09",
+      "name": "Diamant",
+      "image": "assets/diamond.png",
+      "effect": { "type": "rcon", "command": "give {player} minecraft:diamond 3", "cooldownMs": 2000 }
+    },
+    {
+      "slug": "ix_slot_10",
+      "name": "Zombie",
+      "image": "assets/zombie.png",
+      "effect": { "type": "rcon", "command": "execute at {player} run summon minecraft:zombie", "cooldownMs": 5000 }
+    },
+    {
+      "slug": "ix_slot_11",
+      "name": "Pioche en diamant",
+      "image": "assets/diamond_pickaxe.png",
+      "effect": { "type": "rcon", "command": "give {player} minecraft:diamond_pickaxe", "cooldownMs": 3000 }
+    },
+    {
+      "slug": "ix_slot_12",
+      "name": "Épée en diamant",
+      "image": "assets/diamond_sword.png",
+      "effect": { "type": "rcon", "command": "give {player} minecraft:diamond_sword", "cooldownMs": 3000 }
+    },
+    {
+      "slug": "ix_slot_13",
+      "name": "Coffre au trésor",
+      "image": "assets/emerald.png",
+      "effect": { "type": "rcon", "command": "give {player} minecraft:emerald 16", "cooldownMs": 4000 }
+    },
+    {
+      "slug": "ix_slot_14",
+      "name": "Pomme dorée",
+      "image": "assets/golden_apple.png",
+      "effect": { "type": "rcon", "command": "give {player} minecraft:golden_apple 3", "cooldownMs": 3000 }
+    },
+    {
+      "slug": "ix_slot_15",
+      "name": "Orage",
+      "image": "assets/thunder.png",
+      "effect": { "type": "rcon", "command": "weather thunder 300", "cooldownMs": 10000 }
+    },
+    {
+      "slug": "ix_slot_16",
+      "name": "Régénération",
+      "image": "assets/regeneration.png",
+      "effect": { "type": "rcon", "command": "effect give {player} minecraft:regeneration 30 2", "cooldownMs": 4000 }
+    },
+    {
+      "slug": "ix_slot_17",
+      "name": "Vitesse",
+      "image": "assets/speed.png",
+      "effect": { "type": "rcon", "command": "effect give {player} minecraft:speed 60 2", "cooldownMs": 4000 }
+    },
+    {
+      "slug": "ix_slot_18",
+      "name": "Golem de fer (allié)",
+      "image": "assets/golem.png",
+      "effect": { "type": "rcon", "command": "execute at {player} run summon minecraft:iron_golem", "cooldownMs": 6000 }
+    },
+    {
+      "slug": "ix_slot_19",
+      "name": "Force",
+      "image": "assets/strength.png",
+      "effect": { "type": "rcon", "command": "effect give {player} minecraft:strength 90 1", "cooldownMs": 5000 }
+    },
+    {
+      "slug": "ix_slot_20",
+      "name": "Cécité",
+      "image": "assets/blindness.png",
+      "effect": { "type": "rcon", "command": "effect give {player} minecraft:blindness 12 0", "cooldownMs": 8000 }
+    },
+    {
+      "slug": "ix_slot_21",
+      "name": "Bloc de diamant",
+      "image": "assets/diamond_block.png",
+      "effect": { "type": "rcon", "command": "give {player} minecraft:diamond_block 2", "cooldownMs": 4000 }
+    },
+    {
+      "slug": "ix_slot_22",
+      "name": "Lévitation",
+      "image": "assets/levitation.png",
+      "effect": { "type": "rcon", "command": "effect give {player} minecraft:levitation 12 1", "cooldownMs": 10000 }
+    },
+    {
+      "slug": "ix_slot_23",
+      "name": "Lingot de Netherite",
+      "image": "assets/netherite_ingot.png",
+      "effect": { "type": "rcon", "command": "give {player} minecraft:netherite_ingot 1", "cooldownMs": 5000 }
+    },
+    {
+      "slug": "ix_slot_24",
+      "name": "Foudre divine",
+      "image": "assets/lightning_bolt.png",
+      "effect": { "type": "rcon", "command": "execute at {player} run summon minecraft:lightning_bolt", "cooldownMs": 8000 }
+    },
+    {
+      "slug": "ix_slot_25",
+      "name": "Ailes (Élytra)",
+      "image": "assets/elytra.png",
+      "effect": { "type": "rcon", "command": "give {player} minecraft:elytra", "cooldownMs": 8000 }
+    },
+    {
+      "slug": "ix_slot_26",
+      "name": "TNT",
+      "image": "assets/tnt.png",
+      "effect": { "type": "rcon", "command": "execute at {player} run summon minecraft:tnt", "cooldownMs": 15000 }
+    },
+    {
+      "slug": "ix_slot_27",
+      "name": "Totem d'immortalité",
+      "image": "assets/totem_of_undying.png",
+      "effect": { "type": "rcon", "command": "give {player} minecraft:totem_of_undying", "cooldownMs": 8000 }
+    },
+    {
+      "slug": "ix_slot_28",
+      "name": "Ravageur",
+      "image": "assets/ravager.png",
+      "effect": { "type": "rcon", "command": "execute at {player} run summon minecraft:ravager", "cooldownMs": 15000 }
+    },
+    {
+      "slug": "ix_slot_29",
+      "name": "Bloc de Netherite",
+      "image": "assets/netherite_block.png",
+      "effect": { "type": "rcon", "command": "give {player} minecraft:netherite_block 1", "cooldownMs": 8000 }
+    },
+    {
+      "slug": "ix_slot_30",
+      "name": "Dragon",
+      "image": "assets/dragon.png",
+      "effect": { "type": "rcon", "command": "execute at {player} run summon minecraft:ender_dragon", "cooldownMs": 30000 }
+    }
+  ]
+}

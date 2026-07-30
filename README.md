@@ -169,7 +169,7 @@ New gifts show up here on their own, so fetch it at startup rather than hard-cod
 For **interactive gifts**, instead of a hand-written slug→command switch you can load a
 **bundle** and let the connector wire it up — with a per-slot cooldown and safe
 placeholder substitution. A bundle is the same `bundle.json` shape used by the
-[community bundles repo](https://github.com/houla-community/bundles): each reserved slot
+[community bundles repo](https://github.com/Hou-la/houla-bundles): each reserved slot
 (`ix_slot_01`…`ix_slot_30`) carries an `effect`.
 
 ```js
@@ -202,28 +202,39 @@ conn.simulateGift({ slug: 'ix_slot_09', senderName: 'Alice' }); // → your onCo
 
 ## No terminal — the app (for streamers)
 
-Don't want to touch npm or a terminal? Grab **`houla-connector.exe`** from the
-[Releases](https://github.com/Hou-la/houla-live-connector/releases) page (built by CI), then:
+Don't want to touch npm or a terminal? Download the zip for your OS from the
+[Releases](https://github.com/Hou-la/houla-live-connector/releases) page (built by CI) —
+**Windows, macOS (Intel + Apple Silicon), Linux**:
 
-1. Unzip → you get `houla-connector.exe`, `houla.config.json` and a sample `bundle.json`.
-2. Open `houla.config.json` and paste your key (created in the Studio → *Connecteur live*):
+| OS | Download | Run |
+|----|----------|-----|
+| Windows | `houla-connector-windows-x64.zip` | double-click `houla-connector.exe` (SmartScreen → *More info → Run anyway*) |
+| macOS (Apple Silicon / M-series) | `houla-connector-macos-apple-silicon.zip` | right-click `houla-connector` → *Open* (Gatekeeper → *Open anyway*), or `chmod +x houla-connector && ./houla-connector` |
+| macOS (Intel) | `houla-connector-macos-intel.zip` | same as above |
+| Linux | `houla-connector-linux-x64.zip` | `chmod +x houla-connector && ./houla-connector` |
+
+Each zip contains the binary + `houla.config.json` + the Minecraft `bundle.json` + `QUICKSTART.md`. Then:
+
+1. Open `houla.config.json` and paste your key (created in the Studio → *Connecteur live*):
    ```json
    {
      "key": "hle_your_key",
+     "preset": "bundle.json",
      "vars": { "player": "YourMinecraftName" },
      "rcon": { "host": "127.0.0.1", "port": 25575, "password": "your_rcon_password" }
    }
    ```
    The `rcon` block is **optional** — leave it out to just see gifts logged; add it and gifts fire
-   Minecraft commands. A `bundle.json` next to the exe supplies the gift→command mapping.
-3. **Double-click the exe.** First run without a config? It asks for your key and saves it. Add it to
-   Windows startup so it launches on boot — set-and-forget.
+   Minecraft commands. `bundle.json` supplies the gift→command mapping.
+2. **Run it** (see the table). First run without a config? It asks for your key and saves it. Leave it
+   running during your live — set-and-forget.
 
-The connector is **optional**: run it only if you want gifts to trigger real effects.
+Full step-by-step: [`QUICKSTART.md`](./QUICKSTART.md). The connector is **optional**: run it only if
+you want gifts to trigger real effects.
 
-<sub>Build it yourself: `npm run build:exe` (needs pkg's prebuilt fetch or VS build tools), or with
-[Bun](https://bun.sh): `bun build bin/houla-connector.js --compile --target=bun-windows-x64 --outfile release/houla-connector.exe`.
-CI ([`release-exe.yml`](./.github/workflows/release-exe.yml)) does this on every version tag.</sub>
+<sub>Build it yourself with [Bun](https://bun.sh): `bun build bin/houla-connector.js --compile
+--target=bun-windows-x64|bun-linux-x64|bun-darwin-x64|bun-darwin-arm64 --outfile <name>`. CI
+([`release-exe.yml`](./.github/workflows/release-exe.yml)) builds all four on every version tag.</sub>
 
 ## Examples
 
