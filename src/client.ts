@@ -5,6 +5,7 @@ import {
   ConnectorOptions,
   EventEnvelope,
   EventType,
+  FollowEvent,
   GiftEvent,
 } from './types';
 
@@ -130,6 +131,33 @@ export class HoulaLiveConnection extends EventEmitter {
     this.emit('gift', gift);
     this.emit('event', envelope);
     return gift;
+  }
+
+  /**
+   * Locally emit a synthetic `follow` (and `event`) for SANDBOX testing — no
+   * live, no real follower, no connection required. Mirrors the real dispatch
+   * path so your `on('follow', …)` handler fires identically. Handy to dry-run
+   * a "new follower → effect" reaction before going live.
+   */
+  simulateFollow(opts?: { name?: string; totalFollowers?: number }): FollowEvent {
+    const follow: FollowEvent = {
+      live: { roomId: 'sim', workspaceId: 'sim' },
+      follower: {
+        workspaceId: null,
+        name: opts?.name ?? 'Sandbox',
+        avatarUrl: null,
+      },
+      totalFollowers: opts?.totalFollowers ?? null,
+    };
+    const envelope: EventEnvelope<FollowEvent> = {
+      event: 'live.follow',
+      type: 'follow',
+      timestamp: new Date().toISOString(),
+      data: follow,
+    };
+    this.emit('follow', follow);
+    this.emit('event', envelope);
+    return follow;
   }
 
   // Typed overloads over Node's EventEmitter so editors autocomplete the

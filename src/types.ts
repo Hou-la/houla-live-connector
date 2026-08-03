@@ -5,7 +5,8 @@ export type EventType =
   | 'comment'
   | 'viewer'
   | 'poll'
-  | 'gift_goal';
+  | 'gift_goal'
+  | 'follow';
 
 /** The envelope every event is wrapped in. */
 export interface EventEnvelope<T = unknown> {
@@ -152,6 +153,22 @@ export interface GiftGoalEvent {
   };
 }
 
+/**
+ * A NEW follower gained DURING your live. Rate-limited + deduped server-side:
+ * at most once per (creator, follower) per 24h and once per live per follower,
+ * so an unfollow/re-follow loop cannot spam your effect. Fires only while live.
+ */
+export interface FollowEvent {
+  live: LiveRef;
+  follower: {
+    workspaceId: string | null;
+    name: string | null;
+    avatarUrl: string | null;
+  };
+  /** Your total followers AFTER this one — handy for milestone effects. */
+  totalFollowers: number | null;
+}
+
 /** Payload sent with the `connected` event once the key is accepted. */
 export interface ReadyInfo {
   workspaceId: string;
@@ -181,6 +198,7 @@ export interface ConnectorEvents {
   viewer: (viewer: ViewerEvent) => void;
   poll: (poll: PollEvent) => void;
   gift_goal: (goal: GiftGoalEvent) => void;
+  follow: (follow: FollowEvent) => void;
   /** Fires for every event, whatever its type. Handy for logging. */
   event: (envelope: EventEnvelope) => void;
 }
