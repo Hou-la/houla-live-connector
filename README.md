@@ -262,10 +262,19 @@ Connections are rate limited and capped per key. If you open too many at once, o
 
 ## Contributing
 
-Issues and pull requests are welcome. Extra bridges (Streamer.bot, OBS, home automation, other games) make good examples, keep them small and dependency light.
+This repository is published for you to read, audit, fork and build on — but it is **maintained
+in-house and does not accept pull requests**. Incoming PRs are closed automatically.
+
+**Issues are very welcome**, and they are the fastest way to get something changed: bug reports,
+a bridge that misbehaves, a missing event field, an idea for a new integration. See
+[CONTRIBUTING.md](./CONTRIBUTING.md).
+
+Want to share a *gift pack* (artwork + effect mapping) rather than connector code? That has its
+own repo and it **is** open to pull requests:
+[Hou-la/houla-bundles](https://github.com/Hou-la/houla-bundles).
 
 ## License
 
-[Business Source License 1.1](./LICENSE) (BUSL-1.1).
-
-In plain terms: you can read, modify and redistribute the code, and use it in production — commercially included — to wire your own overlays, bots, games and tools to Hou.la. What you cannot do is resell it to third parties as a hosted or managed service exposing a substantial part of its functionality. On 2030-08-05 each version automatically converts to the MIT License.
+[Apache License 2.0](./LICENSE). Use it, fork it, ship it commercially — the only things it asks
+are that you keep the notices and that you don't use the Hou.la name or logo to pass your fork
+off as ours.

@@ -15,7 +15,7 @@
     "overlay",
     "obs"
   ],
-  "license": "BUSL-1.1",
+  "license": "Apache-2.0",
   "author": "Hou.la",
   "homepage": "https://github.com/Hou-la/houla-live-connector",
   "repository": {
@@ -29,7 +29,8 @@
   },
   "files": [
     "dist",
-    "bin"
+    "bin",
+    "NOTICE"
   ],
   "scripts": {
     "build": "tsc",

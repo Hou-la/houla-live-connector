@@ -1,0 +1,50 @@
+name: Close external pull requests
+
+# This connector is maintained in-house: the repo is public to be read, audited and
+# forked, not to be co-developed. GitHub gives no setting to disable PRs on a public
+# repo, so we close them politely and point people at issues (and at houla-bundles,
+# which IS open to PRs). Maintainer PRs are left alone.
+#
+# pull_request_target (not pull_request) is required: a PR from a fork gets a
+# read-only token under pull_request, so closing it would 403. This is safe here
+# ONLY because we never check out the PR's code — we just call the API.
+
+on:
+  pull_request_target:
+    types: [opened, reopened]
+
+permissions:
+  pull-requests: write
+
+jobs:
+  close:
+    # OWNER / MEMBER / COLLABORATOR = the Hou.la side. Everyone else gets the notice.
+    if: >-
+      github.event.pull_request.author_association != 'OWNER' &&
+      github.event.pull_request.author_association != 'MEMBER' &&
+      github.event.pull_request.author_association != 'COLLABORATOR'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const issue_number = context.payload.pull_request.number;
+
+            await github.rest.issues.createComment({
+              owner, repo, issue_number,
+              body: [
+                "Thanks for taking the time to write this — and sorry for the automated reply.",
+                "",
+                "This repository is published so the connector can be **read, audited and forked**, but it is maintained in-house and **does not accept pull requests**. That is a policy about the repo, not a judgement on your change. See [CONTRIBUTING.md](../blob/main/CONTRIBUTING.md).",
+                "",
+                "Two things that do work:",
+                "",
+                "- **Open an issue.** It is the fastest way to get a fix or an integration prioritised, and we read all of them.",
+                "- **Fork it.** The code is Apache 2.0 — ship your own version freely, just not under the Hou.la name or logo.",
+                "",
+                "And if you were contributing a *gift pack* (artwork + effect mapping) rather than connector code, that lives in **[Hou-la/houla-bundles](https://github.com/Hou-la/houla-bundles)**, which **is** open to pull requests.",
+              ].join("\n"),
+            });
+
+            await github.rest.pulls.update({ owner, repo, pull_number: issue_number, state: "closed" });
