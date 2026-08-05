@@ -15,7 +15,7 @@
     "overlay",
     "obs"
   ],
-  "license": "MIT",
+  "license": "BUSL-1.1",
   "author": "Hou.la",
   "homepage": "https://github.com/Hou-la/houla-live-connector",
   "repository": {

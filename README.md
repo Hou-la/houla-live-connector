@@ -266,4 +266,6 @@ Issues and pull requests are welcome. Extra bridges (Streamer.bot, OBS, home aut
 
 ## License
 
-MIT. See [LICENSE](./LICENSE).
+[Business Source License 1.1](./LICENSE) (BUSL-1.1).
+
+In plain terms: you can read, modify and redistribute the code, and use it in production — commercially included — to wire your own overlays, bots, games and tools to Hou.la. What you cannot do is resell it to third parties as a hosted or managed service exposing a substantial part of its functionality. On 2030-08-05 each version automatically converts to the MIT License.
