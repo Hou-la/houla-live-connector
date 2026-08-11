@@ -56,6 +56,7 @@ Live events — pick which ones a key receives when you create it:
 | `viewer` | a viewer joins, shares, opens your shop or adds to cart |
 | `poll` | a poll starts, its tally updates, or it closes (switch on `poll.phase`) |
 | `gift_goal` | a gift-goal's progress advances |
+| `follow` | a NEW follower during your live — deduped + throttled server-side, so an unfollow/re-follow loop can't spam your effect |
 
 All events are fully typed. There is also a catch all `event` that fires for everything, handy for logging:
 
