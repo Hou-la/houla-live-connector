@@ -68,6 +68,18 @@ conn.on('event', (envelope) => {
 
 Every payload carries only public display identity — a workspace's name, avatar, handle and verified badge — never private account data. Each live event includes `live: { roomId, workspaceId }`.
 
+### Who did it — followers & moderators
+
+The person behind an event also comes with two relationship flags, `isFollower` and `isModerator`, so you can gate what an effect does. They sit on `sender` (gifts), `author` (comments), `viewer` (viewer events) and `follower` (follows):
+
+```js
+conn.on('gift', (gift) => {
+  if (!gift.sender.isFollower) return;         // effects reserved for followers
+  if (gift.sender.isModerator) doModThing();   // mods get something extra
+  fireEffect(gift);
+});
+```
+
 ### Gift payload
 
 ```ts

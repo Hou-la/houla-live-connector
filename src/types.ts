@@ -53,6 +53,10 @@ export interface GiftEvent {
     workspaceId: string | null;
     name: string | null;
     avatarUrl: string | null;
+    /** The sender follows you. */
+    isFollower: boolean;
+    /** The sender is one of your moderators. */
+    isModerator: boolean;
   };
 }
 
@@ -67,6 +71,10 @@ export interface PublicIdentity {
   /** Present on comment authors; absent on viewers. */
   slug?: string | null;
   isVerified: boolean;
+  /** This person follows the creator whose live this is. */
+  isFollower: boolean;
+  /** This person is one of the creator's moderators. */
+  isModerator: boolean;
 }
 
 /** Reference to the live an event belongs to. */
@@ -164,6 +172,10 @@ export interface FollowEvent {
     workspaceId: string | null;
     name: string | null;
     avatarUrl: string | null;
+    /** Always true here — they just followed you. */
+    isFollower: boolean;
+    /** They are also one of your moderators. */
+    isModerator: boolean;
   };
   /** Your total followers AFTER this one — handy for milestone effects. */
   totalFollowers: number | null;

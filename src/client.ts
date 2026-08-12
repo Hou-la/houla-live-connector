@@ -98,6 +98,8 @@ export class HoulaLiveConnection extends EventEmitter {
     quantity?: number;
     coinCost?: number;
     senderName?: string;
+    isFollower?: boolean;
+    isModerator?: boolean;
   }): GiftEvent {
     const quantity = opts.quantity ?? 1;
     const coinCost = opts.coinCost ?? 0;
@@ -120,6 +122,8 @@ export class HoulaLiveConnection extends EventEmitter {
         workspaceId: null,
         name: opts.senderName ?? 'Sandbox',
         avatarUrl: null,
+        isFollower: opts.isFollower ?? false,
+        isModerator: opts.isModerator ?? false,
       },
     };
     const envelope: EventEnvelope<GiftEvent> = {
@@ -139,13 +143,19 @@ export class HoulaLiveConnection extends EventEmitter {
    * path so your `on('follow', …)` handler fires identically. Handy to dry-run
    * a "new follower → effect" reaction before going live.
    */
-  simulateFollow(opts?: { name?: string; totalFollowers?: number }): FollowEvent {
+  simulateFollow(opts?: {
+    name?: string;
+    totalFollowers?: number;
+    isModerator?: boolean;
+  }): FollowEvent {
     const follow: FollowEvent = {
       live: { roomId: 'sim', workspaceId: 'sim' },
       follower: {
         workspaceId: null,
         name: opts?.name ?? 'Sandbox',
         avatarUrl: null,
+        isFollower: true,
+        isModerator: opts?.isModerator ?? false,
       },
       totalFollowers: opts?.totalFollowers ?? null,
     };
