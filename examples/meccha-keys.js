@@ -47,7 +47,8 @@ const MAP = {
   diamond: 'r', //               force a pose
   fire_dragon: 'f', //           paint mode (colour chaos)
   'super-star': 'space', //      jump
-  neo_yokai_portal: '1,r,f,space', // panic combo (taunt + pose + paint + jump)
+  galaxy: 'shift', //            release your hiding pose (Shift) — breaks your camouflage
+  neo_yokai_portal: 'shift,space,1', // panic: unfreeze + jump + taunt (fully exposed)
   // Movement is ZQSD on your AZERTY. nut.js is QWERTY-positional, so the physical
   // Z and Q land on the wrong keys → for moves use 'w' (=Z) and 'a' (=Q); 's'/'d'
   // are the same on both. We'll confirm/fix these once the core actions test OK.
