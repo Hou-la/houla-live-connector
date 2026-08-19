@@ -42,14 +42,15 @@ keyboard.config.autoDelayMs = 0; // we handle our own timing
 //   'space:400'    hold the key for 400 ms
 // Anything not listed here is ignored, so extra gifts do nothing.
 const MAP = {
-  // ↓↓↓ starter map — set these to your real Meccha keys ↓↓↓
-  flame: 'c', // small gift → change colour (colour/paint key?)
-  diamond: 'z', // mid gift   → pose (crouch / lie down key?)
-  fire_dragon: 't', // big gift   → TAUNT (the whistle that gives you away 🔥)
-  // more ideas once you know your binds:
-  // 'super-star':  'space',      // jump
-  // 'galaxy':      'c,c,c,c',     // colour spam (rainbow panic)
-  // 'phoenix_hoo': 'space:400',   // long hold
+  // gift slug           key(s)   Meccha action (your binds)
+  flame: '1', //                 taunt / provocation — the whistle that exposes you 🔥
+  diamond: 'r', //               force a pose
+  fire_dragon: 'f', //           paint mode (colour chaos)
+  'super-star': 'space', //      jump
+  neo_yokai_portal: '1,r,f,space', // panic combo (taunt + pose + paint + jump)
+  // Movement is ZQSD on your AZERTY. nut.js is QWERTY-positional, so the physical
+  // Z and Q land on the wrong keys → for moves use 'w' (=Z) and 'a' (=Q); 's'/'d'
+  // are the same on both. We'll confirm/fix these once the core actions test OK.
 };
 
 // Which key names you can use in the specs above.
