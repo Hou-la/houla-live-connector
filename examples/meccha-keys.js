@@ -21,7 +21,14 @@
 //   SIMULATE=1 SIM_SLUG=fire_dragon node meccha-keys.js
 //   → if your character reacts, synthetic input works and you're good to go.
 
-const { HoulaLiveConnection } = require('@houla/live-connector');
+// Resolves whether you `npm install @houla/live-connector` OR run it from inside
+// this repo (where the package name isn't in node_modules — fall back to build).
+let HoulaLiveConnection;
+try {
+  ({ HoulaLiveConnection } = require('@houla/live-connector'));
+} catch {
+  ({ HoulaLiveConnection } = require('..'));
+}
 const { keyboard, Key } = require('@nut-tree-fork/nut-js');
 
 keyboard.config.autoDelayMs = 0; // we handle our own timing
