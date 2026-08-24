@@ -1,14 +1,24 @@
-// Turn Hou.la gifts into keyboard actions — control any Steam game that has no
-// API (here: MECCHA CHAMELEON). A viewer sends a gift, and the connector presses
-// a key for you, so your chameleon changes colour, strikes a pose, taunts, jumps…
+// Turn Hou.la gifts into SYNTHETIC KEYBOARD actions, for Steam games that have no
+// API/RCON but DO accept synthetic input. A viewer sends a gift → the connector
+// presses a key for you.
 //
-// How it works: many games have no server console (no RCON) and no API. But they
-// DO respond to the keyboard. So we listen for gifts and synthesise a keypress
-// with nut.js. Two important things to know:
-//   1. The GAME WINDOW MUST BE FOCUSED — a synthetic key goes to the active
-//      window, exactly like if you'd pressed it yourself.
-//   2. Some games ignore synthetic input. Test it first (SIMULATE below). If the
-//      chameleon does NOT react, AutoHotkey is the usual fallback.
+// ⚠️ MECCHA CHAMELEON DOES NOT WORK THIS WAY (verified 2026-08-24). Meccha (like
+// many anti-cheat / low-level-input games) IGNORES nut.js synthetic keys entirely
+// — the character does not react, even run as admin. AutoHotkey usually fails too.
+// The keyboard mapping BELOW is kept only as a generic template for games that DO
+// accept synthetic input; do NOT expect it to drive Meccha.
+//
+// ✅ To actually control Meccha (and other synthetic-input-proof games), use the
+// **Hou.la Connect** desktop app: it ships a verified ViGEm sidecar that presents a
+// VIRTUAL XBOX CONTROLLER (real HID device, works where nut.js can't, and — bonus —
+// needs no window focus, and you keep playing on your own keyboard alongside it).
+// Repo: Hou-la/houla-connect-app. This npm SDK stays the DEVELOPER path; the app is
+// the turnkey path and the only one that solves Meccha.
+//
+// How it works: we listen for gifts and synthesise a keypress with nut.js. Note:
+//   1. The GAME WINDOW MUST BE FOCUSED — a synthetic key goes to the active window.
+//   2. Games that ignore synthetic input (Meccha, most anti-cheat titles) → use the
+//      app instead (ViGEm). Test yours first with SIMULATE below.
 //
 // Install and run:
 //   npm install @houla/live-connector @nut-tree-fork/nut-js

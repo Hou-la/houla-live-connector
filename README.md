@@ -2,6 +2,8 @@
 
 Receive your Hou.la live events (gifts, hearts, chat and more) in real time, and do whatever you want with them: show an alert on an OBS overlay, spawn a mob in Minecraft, flash your lights, run a bot.
 
+> **Not a developer? Use the app instead.** [**Hou.la Connect**](https://github.com/Hou-la/houla-connect-app) is a double-click desktop app: log in, install a Pack Bundle, and gifts drive real in-game actions — no terminal, no code. It also solves cases this SDK can't: games that ignore synthetic keyboard input (e.g. **Meccha Chameleon**) are driven through a verified **virtual Xbox controller (ViGEm)**, which nut.js cannot do. This SDK remains the low-level **developer** path — build your own integration in Node.
+
 If you have used `tiktok-live-connector` before, this will feel familiar. You create a connection, you listen for events, that is it.
 
 ```js
