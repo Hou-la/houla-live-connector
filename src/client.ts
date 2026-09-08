@@ -100,6 +100,8 @@ export class HoulaLiveConnection extends EventEmitter {
     senderName?: string;
     isFollower?: boolean;
     isModerator?: boolean;
+    /** Joueur vise (1..8) pour tester un pack multi-manettes. */
+    targetPlayer?: number;
   }): GiftEvent {
     const quantity = opts.quantity ?? 1;
     const coinCost = opts.coinCost ?? 0;
@@ -125,6 +127,10 @@ export class HoulaLiveConnection extends EventEmitter {
         isFollower: opts.isFollower ?? false,
         isModerator: opts.isModerator ?? false,
       },
+      // Le bac a sable vise le joueur demande, ou personne. Sans ce champ, un
+      // pack multi-joueurs se testerait toujours sur le joueur par defaut et
+      // le createur croirait son ciblage casse.
+      targetPlayer: opts.targetPlayer ?? null,
     };
     const envelope: EventEnvelope<GiftEvent> = {
       event: 'live.gift_received',

@@ -58,6 +58,20 @@ export interface GiftEvent {
     /** The sender is one of your moderators. */
     isModerator: boolean;
   };
+  /**
+   * Which player the viewer aimed at (1..8), or `null` when they did not pick
+   * one — which is also the case for every viewer on an older app build.
+   *
+   * Only meaningful when the broadcaster runs several controllers on one
+   * machine (emulators, Parsec) and has declared the players. Treat `null` as
+   * "the default player": that is exactly how it behaved before targeting
+   * existed, so an integration that ignores this field keeps working.
+   *
+   * The server has already checked the target exists and that its controller
+   * answers, so you do not need to re-validate it — but do bound it before
+   * using it as a device index.
+   */
+  targetPlayer: number | null;
 }
 
 /**
