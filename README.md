@@ -4,6 +4,11 @@ Receive your Hou.la live events (gifts, hearts, chat and more) in real time, and
 
 > **Not a developer? Use the app instead.** [**Hou.la Connect**](https://github.com/Hou-la/houla-connect-app) is a double-click desktop app: log in, install a Pack Bundle, and gifts drive real in-game actions — no terminal, no code. It also solves cases this SDK can't: games that ignore synthetic keyboard input (e.g. **Meccha Chameleon**) are driven through a verified **virtual Xbox controller (ViGEm)**, which nut.js cannot do. This SDK remains the low-level **developer** path — build your own integration in Node.
 
+> **Writing a Hou.la Connect pack or a game plugin** (mod, RCON, WebSocket or HTTP mode, a companion
+> program over a local API, the JSON pack format, security rules, verified examples and an AI guide)?
+> That is documented at **https://hou.la/apps/houla-connect/developpeurs** (French and English),
+> not here. This SDK does not read Connect packs.
+
 If you have used `tiktok-live-connector` before, this will feel familiar. You create a connection, you listen for events, that is it.
 
 ```js
@@ -185,7 +190,10 @@ For **interactive gifts**, instead of a hand-written slug→command switch you c
 **bundle** and let the connector wire it up — with a per-slot cooldown and safe
 placeholder substitution. A bundle is the same `bundle.json` shape used by the
 [community bundles repo](https://github.com/Hou-la/houla-bundles): each reserved slot
-(`ix_slot_01`…`ix_slot_30`) carries an `effect`.
+(~~`ix_slot_01`…`ix_slot_30`~~ `ix_slot_01`…`ix_slot_99` since the bundles schema of 2026-09-08,
+noticed 2026-10-01: `grep -n ix_slot schema/bundle.schema.json` in that repo) carries an `effect`.
+This `bundle.json` is **not** a Hou.la Connect pack: Connect packs are documented at
+https://hou.la/apps/houla-connect/developpeurs.
 
 ```js
 const { HoulaLiveConnection, loadPreset, applyPreset } = require('@houla/live-connector');

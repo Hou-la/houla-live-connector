@@ -4,7 +4,7 @@ import { GiftEvent } from './types';
 
 /** One reserved slot's effect, from a bundle.json slot (or a plain preset). */
 export interface PresetEntry {
-  /** The reserved slot slug this effect fires on (ix_slot_01..30). */
+  /** The reserved slot slug this effect fires on (ix_slot_01..99 since 2026-09-08; was ..30). */
   slug: string;
   type?: 'rcon' | 'obs' | 'http' | 'custom';
   /** The command to run. `template` is an alias for `command`. */
